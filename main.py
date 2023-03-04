@@ -7,8 +7,8 @@ import random
 import definitions
 
 PYGAME = True
-STARTING_HERBS = 100
-STARTING_CARNS = 0
+STARTING_HERBS = 500
+STARTING_CARNS = 10
 STARTING_PLANTS = 0
 speed = 60
 if PYGAME:
@@ -67,44 +67,17 @@ while running:
         if herb['hunger'] <= 0 or herb['age'] >= 6000:
             herbs.remove(herb)
             break
-        for herb2 in herbs:
-            if math.dist((herb['x'],
-                          herb['y']),
-                         (herb2['x'],
-                          herb2['y'])) <= (herb2['size'] + herb['size']) and \
-                    herb['hunger'] >= 100 and \
-                    herb2 != herb and \
-                    herb2['hunger'] >= 100 \
-                    and herb['fertility'] >= 100 and herb2['fertility'] >= 100:
-                herb['hunger'] -= 50
-                herb2['hunger'] -= 50
-                herb['fertility'] = 0
-                herb2['fertility'] = 0
-                herb = {'size': (herb['size'] + herb2['size']) / 2 + (random.randint(-10, 10) / 10),
-                        'x': herb['x'],
-                        'y': herb['y'],
-                        'x_speed': random.randint(-1, 1),
-                        'y_speed': random.randint(-1, 1),
-                        'hunger': 100,
-                        'age': 0,
-                        'speed': (herb['speed'] + herb2['speed']) / 2 + (random.randint(-10, 10) / 10),
-                        'color': (
-                            (herb['color'][0] + herb2['color'][0]) / 2, (herb['color'][1] + herb2['color'][1]) / 2,
-                            (herb['color'][2] + herb2['color'][2]) / 2),
-                        'generation': herb['generation'] + 1,
-                        'fertility': 0}
-                herb['hunger'] = herb['size'] * 10
-                if herb['generation'] > max_generation:
-                    max_generation = herb['generation']
+        definitions.breed(herb, herbs)
+        if herb['generation'] > max_generation:
+            max_generation = herb['generation']
 
-                    print(" ----------------------------" +
-                          "\n herbivore population " + str(len(herbs)) +
-                          "\n carnivore population " + str(len(carns)) +
-                          "\n This herbivore generations speed = " + str(math.trunc(herb['speed'])) +
-                          "\n This herbivore generations size = " + str(math.trunc(herb['size'])) +
-                          "\n This herbivore generation is number = " + str(herb['generation']))
+            print(" ----------------------------" +
+                  "\n herbivore population " + str(len(herbs)) +
+                  "\n carnivore population " + str(len(carns)) +
+                  "\n This herbivore generations speed = " + str(math.trunc(herb['speed'])) +
+                  "\n This herbivore generations size = " + str(math.trunc(herb['size'])) +
+                  "\n This herbivore generation is number = " + str(herb['generation']))
 
-                herbs.append(herb)
         for plant in plants:
             definitions.eat(herb, plant, plants)
 
@@ -121,8 +94,10 @@ while running:
         if carn['hunger'] <= 0 or carn['age'] >= 6000:
             carns.remove(carn)
             break
+        definitions.breed(carn, carns)
         for herb in herbs:
             definitions.eat(carn, herb, herbs)
+
     if len(herbs) == 0 and not herb_announcement:
         print("herbivores extinct")
         herb_announcement = True
@@ -147,6 +122,7 @@ while running:
                 if event.key == pygame.K_LEFT:
                     speed = 60
                     print(" ----------------------------\n Running at normal speed")
+
         for herb in herbs:
             pygame.draw.circle(screen, herb['color'], (int(herb['x']), int(herb['y'])), herb['size'])
         for plant in plants:
