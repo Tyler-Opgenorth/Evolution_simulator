@@ -1,3 +1,6 @@
+"""This is the main file for the evolution simulator.
+It is a simple simulation of evolution.
+created by: Tyler Opgenorth"""
 import math
 import pygame
 import random
