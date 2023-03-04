@@ -51,17 +51,17 @@ def breed(name, names):
             name['fertility'] = 0
             name2['fertility'] = 0
             name2 = {'size': (name['size'] + name2['size']) / 2 + (random.randint(-10, 10) / 10),
-                    'x': name['x'],
-                    'y': name['y'],
-                    'x_speed': random.randint(-1, 1),
-                    'y_speed': random.randint(-1, 1),
-                    'hunger': 100,
-                    'age': 0,
-                    'speed': (name['speed'] + name2['speed']) / 2 + (random.randint(-10, 10) / 10),
-                    'color': (
-                        (name['color'][0] + name2['color'][0]) / 2, (name['color'][1] + name2['color'][1]) / 2,
-                        (name['color'][2] + name2['color'][2]) / 2),
-                    'generation': name['generation'] + 1,
-                    'fertility': 0}
+                     'x': name['x'],
+                     'y': name['y'],
+                     'x_speed': random.randint(-1, 1),
+                     'y_speed': random.randint(-1, 1),
+                     'hunger': 100,
+                     'age': 0,
+                     'speed': (name['speed'] + name2['speed']) / 2 + (random.randint(-10, 10) / 10),
+                     'color': (
+                         (name['color'][0] + name2['color'][0]) / 2, (name['color'][1] + name2['color'][1]) / 2,
+                         (name['color'][2] + name2['color'][2]) / 2),
+                     'generation': name['generation'] + 1,
+                     'fertility': 0}
             name['hunger'] = name['size'] * 10
             names.append(name)

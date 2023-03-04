@@ -7,8 +7,8 @@ import random
 import definitions
 
 PYGAME = True
-STARTING_HERBS = 500
-STARTING_CARNS = 10
+STARTING_HERBS = 50
+STARTING_CARNS = 5
 STARTING_PLANTS = 0
 speed = 60
 if PYGAME:
@@ -42,14 +42,14 @@ for i in range(STARTING_PLANTS):
 
 carns = []
 for i in range(STARTING_CARNS):
-    carn = {'size': random.randint(5, 15),
+    carn = {'size': random.randint(5, 10),
             'x': random.randint(1, 800),
             'y': random.randint(1, 600),
             'x_speed': random.randint(-1, 1),
             'y_speed': random.randint(-1, 1),
             'hunger': 0,
             'age': 0,
-            'speed': random.randint(1, 15),
+            'speed': random.randint(1, 10),
             'color': (random.randint(155, 255), random.randint(25, 55), random.randint(25, 55)),
             'generation': 1,
             'fertility': 0}
