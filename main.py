@@ -5,22 +5,30 @@ import math
 import pygame
 import random
 import definitions
+import tkinter
+pygame.init()
+root = tkinter.Tk()
+WIDTH = root.winfo_screenwidth()
+HEIGHT = root.winfo_screenheight()
 
 PYGAME = True
-STARTING_HERBS = 50
-STARTING_CARNS = 5
+STARTING_HERBS = int(WIDTH * HEIGHT / 100000)
+STARTING_CARNS = 0
 STARTING_PLANTS = 0
 speed = 60
+
+font = pygame.font.Font('freesansbold.ttf', 32)
+
 if PYGAME:
-    screen = pygame.display.set_mode((800, 600))
+    screen = pygame.display.set_mode((WIDTH, HEIGHT))
     pygame.display.set_caption('Evo test')
     clock = pygame.time.Clock()
 
 herbs = []
 for i in range(STARTING_HERBS):
     herb = {'size': random.randint(5, 15),
-            'x': random.randint(1, 800),
-            'y': random.randint(1, 600),
+            'x': random.randint(0, WIDTH),
+            'y': random.randint(0, HEIGHT),
             'x_speed': random.randint(-1, 1),
             'y_speed': random.randint(-1, 1),
             'hunger': 0,
@@ -36,15 +44,15 @@ for i in range(STARTING_HERBS):
 plants = []
 for i in range(STARTING_PLANTS):
     plant = {'size': 1,
-             'x': random.randint(1, 800),
-             'y': random.randint(1, 600), }
+             'x': random.randint(0, WIDTH),
+             'y': random.randint(0, HEIGHT), }
     plants.append(plant)
 
 carns = []
 for i in range(STARTING_CARNS):
     carn = {'size': random.randint(5, 10),
-            'x': random.randint(1, 800),
-            'y': random.randint(1, 600),
+            'x': random.randint(0, WIDTH),
+            'y': random.randint(0, HEIGHT),
             'x_speed': random.randint(-1, 1),
             'y_speed': random.randint(-1, 1),
             'hunger': 0,
@@ -63,7 +71,7 @@ running = True
 while running:
 
     for herb in herbs:
-        definitions.age_and_move(herb)
+        definitions.age_and_move(herb, WIDTH, HEIGHT)
         if herb['hunger'] <= 0 or herb['age'] >= 6000:
             herbs.remove(herb)
             break
@@ -85,12 +93,12 @@ while running:
         plant['size'] += .1
 
     plant = {'size': 1,
-             'x': random.randint(1, 800),
-             'y': random.randint(1, 600), }
+             'x': random.randint(1, WIDTH),
+             'y': random.randint(1, HEIGHT), }
     plants.append(plant)
 
     for carn in carns:
-        definitions.age_and_move(carn)
+        definitions.age_and_move(carn, WIDTH, HEIGHT)
         if carn['hunger'] <= 0 or carn['age'] >= 6000:
             carns.remove(carn)
             break
@@ -112,6 +120,8 @@ while running:
     if PYGAME:
         clock.tick(speed)
         screen.fill((0, 0, 0))
+        text = font.render("herbivores: " + str(len(herbs)), True, (100, 255, 255))
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
@@ -129,5 +139,6 @@ while running:
             pygame.draw.circle(screen, (0, 255, 0), (int(plant['x']), int(plant['y'])), plant['size'])
         for carn in carns:
             pygame.draw.circle(screen, carn['color'], (int(carn['x']), int(carn['y'])), carn['size'])
+        screen.blit(text, (0, 10))
         pygame.display.flip()
         pygame.display.update()
