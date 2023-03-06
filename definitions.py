@@ -2,7 +2,7 @@ import random
 import math
 
 
-def age_and_move(name):
+def age_and_move(name, WIDTH, HEIGHT):
     name['age'] += .1
     name['fertility'] += .1
     if abs(name['x_speed']) > name['speed'] - (name['size'] / 10):
@@ -14,11 +14,11 @@ def age_and_move(name):
     name['x'] += name['x_speed']
     name['y'] += name['y_speed']
 
-    if name['x'] >= 800:
-        name['x'] = 799
+    if name['x'] >= WIDTH:
+        name['x'] = WIDTH-1
         name['x_speed'] = -name['x_speed']
-    if name['y'] >= 600:
-        name['y'] = 599
+    if name['y'] >= HEIGHT:
+        name['y'] = HEIGHT-1
         name['y_speed'] = -name['y_speed']
     if name['x'] <= 0:
         name['x'] = 1
@@ -41,16 +41,16 @@ def breed(name, names):
                       name['y']),
                      (name2['x'],
                       name2['y'])) <= (name2['size'] + name['size']) and \
-                name['hunger'] >= 100 and \
+                name['hunger'] >= 50 and \
                 name2 != name and \
-                name2['hunger'] >= 100 and \
+                name2['hunger'] >= 50 and \
                 name['fertility'] >= 100 and \
                 name2['fertility'] >= 100:
             name['hunger'] -= 50
             name2['hunger'] -= 50
             name['fertility'] = 0
             name2['fertility'] = 0
-            name2 = {'size': (name['size'] + name2['size']) / 2 + (random.randint(-10, 10) / 10),
+            name3 = {'size': (name['size'] + name2['size']) / 2 + (random.randint(-10, 10) / 10),
                      'x': name['x'],
                      'y': name['y'],
                      'x_speed': random.randint(-1, 1),
@@ -64,4 +64,4 @@ def breed(name, names):
                      'generation': name['generation'] + 1,
                      'fertility': 0}
             name['hunger'] = name['size'] * 10
-            names.append(name)
+            names.append(name3)
