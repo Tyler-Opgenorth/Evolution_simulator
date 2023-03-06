@@ -3,22 +3,21 @@ import math
 
 
 def age_and_move(name, WIDTH, HEIGHT):
-    name['age'] += .1
-    name['fertility'] += .1
+
     if abs(name['x_speed']) > name['speed'] - (name['size'] / 10):
         name['x_speed'] = name['speed'] - (name['size'] / 10)
     if abs(name['y_speed']) > name['speed'] - (name['size'] / 10):
         name['y_speed'] = name['speed'] - (name['size'] / 10)
-    name['y_speed'] += random.randint(-1, 1) / 10
-    name['x_speed'] += random.randint(-1, 1) / 10
+    name['y_speed'] += random.randint(-10, 10) / 100
+    name['x_speed'] += random.randint(-10, 10) / 100
     name['x'] += name['x_speed']
     name['y'] += name['y_speed']
 
     if name['x'] >= WIDTH:
-        name['x'] = WIDTH-1
+        name['x'] = WIDTH-name['size']
         name['x_speed'] = -name['x_speed']
     if name['y'] >= HEIGHT:
-        name['y'] = HEIGHT-1
+        name['y'] = HEIGHT-name['size']
         name['y_speed'] = -name['y_speed']
     if name['x'] <= 0:
         name['x'] = 1
@@ -27,6 +26,9 @@ def age_and_move(name, WIDTH, HEIGHT):
         name['y'] = 1
         name['y_speed'] = -name['y_speed']
     name['hunger'] -= .1
+    name['size'] += .1/100
+    name['age'] += .1
+    name['fertility'] += .1
 
 
 def eat(eater, eaten, eatens):
@@ -50,7 +52,7 @@ def breed(name, names):
             name2['hunger'] -= 50
             name['fertility'] = 0
             name2['fertility'] = 0
-            name3 = {'size': (name['size'] + name2['size']) / 2 + (random.randint(-10, 10) / 10),
+            name3 = {'size': (name['size']-name['age'] + name2['size']-name2['age']) / 2 + (random.randint(-10, 10) / 10),
                      'x': name['x'],
                      'y': name['y'],
                      'x_speed': random.randint(-1, 1),
